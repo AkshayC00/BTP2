@@ -141,8 +141,8 @@ function LandingPage() {
               }}
             >
               <option selected>Choose your gender</option>
-              <option value='m'>Boobies</option>
-              <option value='f'>I don't how to drive</option>
+              <option value='m'>Male</option>
+              <option value='f'>Female</option>
             </select>
           </div>
           <input
