@@ -17,7 +17,7 @@ RUN sudo apt-get install -y python3
 RUN sudo apt-get install -y python3-pip
 
 # Install Vite
-RUN npm install -g create-vite
+# RUN npm install -g create-vite
 
 COPY . .
 
