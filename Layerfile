@@ -1,4 +1,45 @@
-# Layerfile
+# Set the image
+FROM vm/ubuntu:18.04
+
+MEMORY 2G
+
+# Install nodejs and npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+RUN sudo apt-get install -y nodejs
+
+# Install npm
+RUN npm install npm@latest -g
+
+# Install python3
+RUN sudo apt-get install -y python3
+
+# Install pip
+RUN sudo apt-get install -y python3-pip
+
+# Install Flask
+RUN pip install Flask
+
+# Install Vite
+RUN npm install -g create-vite
+
+COPY . .
+
+# Run frontend using vite
+<!-- RUN create-vite vite-project -->
+RUN cd vite-project
+RUN npm install
+RUN BAKCKGROUND npm run build
+
+# Run backend using Flask
+<!-- RUN mkdir backend -->
+RUN cd ../backend
+RUN pip install -r requirements.txt
+RUN python3 ./app.py
+
+EXPOSE WEBSITE http://localhost:5173
+
+
+<!-- # Layerfile
 
 # Frontend (React) layer
 frontend:
@@ -26,4 +67,4 @@ backend:
 # Define layer dependencies if needed
 # dependencies:
 #   - frontend
-#   - backend
+#   - backend -->
