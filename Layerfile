@@ -1,39 +1,48 @@
-# Set the image
+# Use an Ubuntu 18.04 base for our staging server
 FROM vm/ubuntu:18.04
 
-MEMORY 2G
+# To note: Layerfiles create entire VMs, *not* containers!
 
-# Install nodejs and npm
-RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-RUN sudo apt-get install -y nodejs
+# Install python
+RUN apt-get update && apt-get install python3.10
+# RUN python3.10 --version
+RUN apt-get -y install python3-pip
+RUN ls /bin
+# RUN apt-get install pip3
+RUN curl -fSsL https://deb.nodesource.com/setup_12.x | bash && \
+    apt-get install nodejs make gcc build-essential && \
+    rm -f /etc/apt/sources.list.d/nodesource.list
+# RUN apt-get install python3.10
+RUN update-alternatives --install /bin/python3 python3 /bin/python3.10 1
+# RUN update-alternatives --config python3
 
-# Install npm
-RUN npm install npm@latest -g
+MEMORY 5G
+ENV NODE_OPTIONS=--max-old-space-size=8192
+# Create some files
 
-# Install python3
-RUN sudo apt-get install -y python3
 
-# Install pip
-RUN sudo apt-get install -y python3-pip
+# You could also install & start a database:
+# RUN apt-get update && apt-get install postgresql
 
-# Install Vite
-# RUN npm install -g create-vite
-
+# This line copies the repository to /root in the runner
 COPY . .
+RUN ls
 
-# Run frontend using vite
+# Expose the webserver in the staging server as a secure link.
+# Whenever someone clicks the link, we'll load this staging server and forward
+# their requests to it.
 
-WORKDIR vite-project
-RUN npm install
-RUN BAKCKGROUND npm run build
+RUN pip3 install -r ./backend/requirements.txt
+RUN cd ./backend
 
-# Run backend using Flask
-
-WORKDIR /backend
-RUN pip3 install -r requirements.txt
-RUN python3 ./app.py
-
+RUN BACKGROUND flask run --port:4000
+RUN cd ../
+RUN cd ./vite-project
+RUN npm install || true
+RUN npm run dev
 EXPOSE WEBSITE http://localhost:5173
 
+# node is a memory hog
 
 
+# RUN BACKGROUND npm start || python3 -m http.server 3000
