@@ -16,9 +16,6 @@ RUN sudo apt-get install -y python3
 # Install pip
 RUN sudo apt-get install -y python3-pip
 
-# Install Flask
-RUN pip install Flask
-
 # Install Vite
 RUN npm install -g create-vite
 
@@ -33,7 +30,7 @@ RUN BAKCKGROUND npm run build
 # Run backend using Flask
 
 RUN cd ../backend
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 RUN python3 ./app.py
 
 EXPOSE WEBSITE http://localhost:5173
