@@ -23,7 +23,7 @@ COPY . .
 
 # Run frontend using vite
 
-WORKDIR /vite-project
+WORKDIR vite-project
 RUN npm install
 RUN BAKCKGROUND npm run build
 
