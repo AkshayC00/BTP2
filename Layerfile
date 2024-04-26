@@ -25,13 +25,13 @@ RUN npm install -g create-vite
 COPY . .
 
 # Run frontend using vite
-<!-- RUN create-vite vite-project -->
+
 RUN cd vite-project
 RUN npm install
 RUN BAKCKGROUND npm run build
 
 # Run backend using Flask
-<!-- RUN mkdir backend -->
+
 RUN cd ../backend
 RUN pip install -r requirements.txt
 RUN python3 ./app.py
@@ -39,32 +39,4 @@ RUN python3 ./app.py
 EXPOSE WEBSITE http://localhost:5173
 
 
-<!-- # Layerfile
 
-# Frontend (React) layer
-frontend:
-  # Specify the build directory for the frontend
-  build_dir: vite-project/dist
-  # Install dependencies and build React
-  build:
-    - cd vite-project
-    - npm install
-    - npm run build
-
-# Backend (Flask) layer
-backend:
-  # Specify the Flask app directory
-  app_dir: backend
-  # Install dependencies for Flask
-  setup:
-    - cd backend
-    - pip install -r requirements.txt
-  # Run Flask server
-  run:
-    - cd backend
-    - flask run --host=0.0.0.0 --port=4000
-
-# Define layer dependencies if needed
-# dependencies:
-#   - frontend
-#   - backend -->
